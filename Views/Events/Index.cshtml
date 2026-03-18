@@ -1,96 +1,53 @@
-﻿@{
-    ViewData["Title"] = "Events";
+﻿@model IEnumerable<EventEase.Models.Event>
+
+@{
+    ViewData["Title"] = "Index";
 }
 
-<div class="d-flex justify-content-between mb-4">
-    <h2>Events</h2>
+<h1>Index</h1>
 
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEventModal">
-        Add Event
-    </button>
-</div>
-
-<table class="table table-hover bg-white shadow-sm">
-
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
     <thead>
         <tr>
-            <th>Event Name</th>
-            <th>Date</th>
-            <th>Venue</th>
-            <th>Description</th>
-            <th>Actions</th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Venue)
+            </th>
+            <th></th>
         </tr>
     </thead>
-
     <tbody>
-
+@foreach (var item in Model) {
         <tr>
-            <td>Annual Gala Dinner</td>
-            <td>4/15/2026</td>
-            <td>Grand Ballroom</td>
-            <td>A formal evening celebrating achievements</td>
-
             <td>
-                <button class="btn btn-outline-primary btn-sm">Edit</button>
-                <button class="btn btn-outline-danger btn-sm">Delete</button>
+                @Html.DisplayFor(modelItem => item.EventName)
             </td>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.EventDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Venue.VenueId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a>
+            </td>
         </tr>
-
+}
     </tbody>
-
 </table>
-
-<div class="modal fade" id="addEventModal">
-
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title">Add Event</h5>
-                <button class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body">
-
-                <form>
-
-                    <div class="mb-3">
-                        <label>Event Name</label>
-                        <input class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Date</label>
-                        <input type="date" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Venue</label>
-
-                        <select class="form-control">
-                            <option>Grand Ballroom</option>
-                            <option>Riverside Pavilion</option>
-                            <option>Skyline Rooftop</option>
-                            <option>Garden Terrace</option>
-                        </select>
-
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Description</label>
-<textarea class="form-control"></textarea>
-                    </div>
-
-                    <button class="btn btn-success">
-                        Save
-                    </button>
-
-                </form>
-
-            </div>
-
-        </div>
-    </div>
-
-</div>

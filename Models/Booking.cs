@@ -1,5 +1,8 @@
-﻿namespace EventEase.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EventEase.Models
 {
+    [Table("Booking")]
     public class Booking
     {
         public int BookingId { get; set; }
@@ -10,8 +13,8 @@
 
         public DateTime BookingDate { get; set; }
 
-        public Event Event { get; set; }
+        public Event? Event { get; set; }
 
-        public Venue Venue { get; set; }
+        public Venue? Venue { get; set; }
     }
 }
