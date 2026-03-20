@@ -39,9 +39,21 @@
             color:white;
         }
 
+        .sidebar a.active-link {
+            background: #374151;
+            color: white;
+            font-weight: 600;
+        }
+
         .content{
             margin-left:220px;
             padding:30px;
+        }
+
+        .sidebar-divider {
+            border: none;
+            border-top: 4px solid #374151;
+            margin: 0 20px 10px 20px;
         }
 
     </style>
@@ -53,12 +65,30 @@
     <!-- Sidebar -->
     <div class="sidebar">
 
-        <h4>EventEase</h4>
+        <!-- Logo at bottom -->
+        <div class="text-center mb-3">
+            <img src="~/images/logo.png" alt="Logo" style="max-width:170px;" />
+        </div>
 
-        <a asp-controller="Bookings" asp-action="Index">Bookings</a>
-        <a asp-controller="Venues" asp-action="Index">Venues</a>
-        <a asp-controller="Events" asp-action="Index">Events</a>
-        
+        <hr class="sidebar-divider" />
+
+        <div>
+
+            <a asp-controller="Bookings" asp-action="Index"
+               class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Bookings" ? "active-link" : "")">
+                Bookings
+            </a>
+
+            <a asp-controller="Venues" asp-action="Index"
+               class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Venues" ? "active-link" : "")">
+                Venues
+            </a>
+
+            <a asp-controller="Events" asp-action="Index"
+               class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Events" ? "active-link" : "")">
+                Events
+            </a>
+        </div>
 
     </div>
 

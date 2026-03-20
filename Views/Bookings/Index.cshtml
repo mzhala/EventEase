@@ -8,7 +8,7 @@
     <h2 class="fw-bold">Bookings</h2>
 
     <a asp-action="Create" class="btn btn-success">
-        + New Booking
+        New Booking
     </a>
 </div>
 
@@ -32,7 +32,7 @@
                 {
                     <tr>
                         <td>
-                            @item.BookingDate.ToShortDateString()
+                            @item.BookingDate.ToString("dd MMM yyyy")
                         </td>
 
                         <td>

@@ -161,9 +161,9 @@ namespace EventEase.Controllers
             }
 
             var booking = await _context.Bookings
-    .Include(b => b.Event)
-    .Include(b => b.Venue)
-    .FirstOrDefaultAsync(m => m.BookingId == id);
+                .Include(b => b.Event)
+                .Include(b => b.Venue)
+                .FirstOrDefaultAsync(m => m.BookingId == id);
             if (booking == null)
             {
                 return NotFound();
