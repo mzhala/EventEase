@@ -1,41 +1,92 @@
 ﻿@model EventEase.Models.Booking
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Booking";
 }
 
-<h1>Create</h1>
+<div class="row justify-content-center">
+    <div class="col-md-5">
 
-<h4>Booking</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="EventId" class="control-label"></label>
-                <select asp-for="EventId" class ="form-control" asp-items="ViewBag.EventId"></select>
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0">Create Booking</h4>
+
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                        ← Back
+                    </a>
+                </div>
+
+                <form asp-action="Create">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Event -->
+                    <div class="mb-3">
+                        <label asp-for="EventId" class="form-label fw-semibold">Select Event</label>
+                        <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId" id="eventDropdown"></select>
+                    </div>
+
+                    <!-- Venue (READ ONLY) -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Venue</label>
+                        <input type="text" id="venueDisplay" class="form-control" readonly />
+                    </div>
+
+                    <!-- Hidden VenueId -->
+                    <input type="hidden" asp-for="VenueId" id="venueIdHidden" />
+
+                    <!-- Booking Date -->
+                    <div class="mb-4">
+                        <label asp-for="BookingDate" class="form-label fw-semibold"></label>
+                        <input asp-for="BookingDate" class="form-control" />
+                        <span asp-validation-for="BookingDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+
+                        <input type="submit" value="Create Booking" class="btn btn-success" />
+
+                    </div>
+
+                </form>
+
             </div>
-            <div class="form-group">
-                <label asp-for="VenueId" class="control-label"></label>
-                <select asp-for="VenueId" class ="form-control" asp-items="ViewBag.VenueId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="BookingDate" class="control-label"></label>
-                <input asp-for="BookingDate" class="form-control" />
-                <span asp-validation-for="BookingDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Map EventId → VenueName + VenueId
+        const eventVenueMap = @Html.Raw(Json.Serialize(ViewBag.EventVenueMap));
+
+        const eventDropdown = document.getElementById("eventDropdown");
+        const venueDisplay = document.getElementById("venueDisplay");
+        const venueIdHidden = document.getElementById("venueIdHidden");
+
+        function updateVenue() {
+            const selectedEventId = eventDropdown.value;
+
+            if (eventVenueMap[selectedEventId]) {
+                venueDisplay.value = eventVenueMap[selectedEventId].name;
+                venueIdHidden.value = eventVenueMap[selectedEventId].id;
+            }
+        }
+
+        eventDropdown.addEventListener("change", updateVenue);
+
+        // Run on load
+        updateVenue();
+    </script>
 }

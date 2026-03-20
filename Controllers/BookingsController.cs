@@ -49,8 +49,23 @@ namespace EventEase.Controllers
         // GET: Bookings/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventId");
-            ViewData["VenueId"] = new SelectList(_context.Venues, "VenueId", "VenueId");
+            var events = _context.Events
+                .Include(e => e.Venue)
+                .ToList();
+
+            // Dropdown shows Event Name instead of ID
+            ViewBag.EventId = new SelectList(events, "EventId", "EventName");
+
+            // Map Event → Venue
+            ViewBag.EventVenueMap = events.ToDictionary(
+                e => e.EventId.ToString(),
+                e => new
+                {
+                    id = e.VenueId,
+                    name = e.Venue != null ? e.Venue.VenueName : ""
+                }
+            );
+
             return View();
         }
 
@@ -76,17 +91,27 @@ namespace EventEase.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var booking = await _context.Bookings.FindAsync(id);
             if (booking == null)
-            {
                 return NotFound();
-            }
-            ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventId", booking.EventId);
-            ViewData["VenueId"] = new SelectList(_context.Venues, "VenueId", "VenueId", booking.VenueId);
+
+            var events = _context.Events
+                .Include(e => e.Venue)
+                .ToList();
+
+            ViewBag.EventId = new SelectList(events, "EventId", "EventName", booking.EventId);
+
+            ViewBag.EventVenueMap = events.ToDictionary(
+                e => e.EventId.ToString(),
+                e => new
+                {
+                    id = e.VenueId,
+                    name = e.Venue != null ? e.Venue.VenueName : ""
+                }
+            );
+
             return View(booking);
         }
 
@@ -136,9 +161,9 @@ namespace EventEase.Controllers
             }
 
             var booking = await _context.Bookings
-                .Include(b => b.Event)
-                .Include(b => b.Venue)
-                .FirstOrDefaultAsync(m => m.BookingId == id);
+    .Include(b => b.Event)
+    .Include(b => b.Venue)
+    .FirstOrDefaultAsync(m => m.BookingId == id);
             if (booking == null)
             {
                 return NotFound();

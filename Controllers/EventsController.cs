@@ -48,7 +48,7 @@ namespace EventEase.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            ViewData["VenueId"] = new SelectList(_context.Venues, "VenueId", "VenueId");
+            ViewBag.VenueId = new SelectList(_context.Venues, "VenueId", "VenueName");
             return View();
         }
 
@@ -82,7 +82,7 @@ namespace EventEase.Controllers
             {
                 return NotFound();
             }
-            ViewData["VenueId"] = new SelectList(_context.Venues, "VenueId", "VenueId", @event.VenueId);
+            ViewData["VenueId"] = new SelectList(_context.Venues, "VenueId", "VenueName", @event.VenueId);
             return View(@event);
         }
 
@@ -146,13 +146,24 @@ namespace EventEase.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await _context.Events.FindAsync(id);
-            if (@event != null)
+            var eventItem = await _context.Events
+                .Include(e => e.Venue)
+                .FirstOrDefaultAsync(e => e.EventId == id);
+
+            var hasBookings = _context.Bookings.Any(b => b.EventId == id);
+
+            if (hasBookings)
             {
-                _context.Events.Remove(@event);
+                ViewBag.Error = "Cannot delete event with existing bookings.";
+                return View(eventItem); // stay on delete page
             }
 
-            await _context.SaveChangesAsync();
+            if (eventItem != null)
+            {
+                _context.Events.Remove(eventItem);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

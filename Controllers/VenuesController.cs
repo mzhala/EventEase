@@ -140,12 +140,21 @@ namespace EventEase.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var venue = await _context.Venues.FindAsync(id);
+
+            var hasEvents = _context.Events.Any(e => e.VenueId == id);
+
+            if (hasEvents)
+            {
+                ViewBag.Error = "Cannot delete venue with existing events.";
+                return View(venue); // stay on delete page
+            }
+
             if (venue != null)
             {
                 _context.Venues.Remove(venue);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

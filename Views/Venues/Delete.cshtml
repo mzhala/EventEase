@@ -1,4 +1,11 @@
-﻿@model EventEase.Models.Venue
+﻿@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+@model EventEase.Models.Venue
 
 @{
     ViewData["Title"] = "Delete";
