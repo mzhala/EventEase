@@ -1,18 +1,24 @@
 ﻿using Azure.Storage.Blobs;
-
+using Microsoft.Extensions.Configuration;
 public class BlobService
 {
     private readonly string _connectionString;
     private readonly string _containerName;
 
-    public BlobService(IConfiguration config)
+    public BlobService(IConfiguration configuration)
     {
-        _connectionString = config["AzureBlobStorage:ConnectionString"];
-        _containerName = config["AzureBlobStorage:ContainerName"];
+        _connectionString = configuration.GetValue<string>("AzureBlobStorage:ConnectionString");
+        _containerName = configuration.GetValue<string>("AzureBlobStorage:ContainerName");
     }
+
 
     public async Task<string> UploadFileAsync(IFormFile file)
     {
+
+        if (string.IsNullOrEmpty(_connectionString))
+        {
+            throw new Exception("Blob connection string is missing. Check User Secrets.");
+        }
         var container = new BlobContainerClient(_connectionString, _containerName);
         await container.CreateIfNotExistsAsync();
 
