@@ -22,7 +22,6 @@ namespace EventEase.Models
         public string? ImageUrl { get; set; }
 
         [NotMapped]
-        [Required(ErrorMessage = "Image upload is required")]
         public IFormFile? ImageFile { get; set; }
     }
 }
