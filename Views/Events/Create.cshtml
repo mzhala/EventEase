@@ -1,0 +1,67 @@
+﻿@model EventEase.Models.Event
+
+@{
+    ViewData["Title"] = "Create Event";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0">Create Event</h4>
+
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                        ← Back
+                    </a>
+                </div>
+
+                <form asp-action="Create">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Event Name -->
+                    <div class="mb-3">
+                        <label asp-for="EventName" class="form-label fw-semibold"></label>
+                        <input asp-for="EventName" class="form-control" placeholder="Enter event name" />
+                        <span asp-validation-for="EventName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Event Date -->
+                    
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <!-- Venue -->
+                   
+
+                    <div class="d-flex justify-content-between">
+
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+
+                        <input type="submit" value="Create Event" class="btn btn-success" />
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,76 @@
+﻿@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+@model EventEase.Models.Booking
+
+@{
+    ViewData["Title"] = "Create Booking";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+
+        
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0">Create Booking</h4>
+
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                        ← Back
+                    </a>
+                </div>
+
+                <form asp-action="Create">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Event -->
+                    <div class="mb-3">
+                        <label asp-for="EventId" class="form-label fw-semibold">Select Event</label>
+                        <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId"></select>
+                    </div>
+
+                    <!-- Venue -->
+                    <div class="mb-3">
+                        <label asp-for="VenueId" class="form-label fw-semibold">Select Venue</label>
+                        <select asp-for="VenueId" class="form-control" asp-items="ViewBag.VenueId"></select>
+                    </div>
+
+                    <!-- Booking Date -->
+                    <div class="mb-4">
+                        <label asp-for="BookingDate" class="form-label fw-semibold"></label>
+                        <input asp-for="BookingDate" type="date" class="form-control" />
+                        <span asp-validation-for="BookingDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+
+                        <input type="submit" value="Create Booking" class="btn btn-success" />
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+    
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

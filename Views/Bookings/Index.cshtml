@@ -1,0 +1,121 @@
+﻿@model IEnumerable<EventEase.Models.Booking>
+
+@{
+    ViewData["Title"] = "Bookings";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Bookings</h2>
+
+
+    <a asp-action="Create" class="btn btn-success">
+        New Booking
+    </a>
+
+
+</div>
+
+<form method="get" id="searchForm" class="mb-3">
+    <input type="text"
+           id="searchInput"
+           name="searchString"
+           value="@Context.Request.Query["searchString"]"
+           class="form-control"
+           placeholder="Search bookings..." />
+</form>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+
+    
+        <table class="table table-hover mb-0">
+
+            <thead class="table-light">
+                <tr>
+                    <th></th>
+                    <th>Booking Date</th>
+                    <th>Event</th>
+                    <th>Venue</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr class="align-middle">
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Venue?.ImageUrl))
+                            {
+                                <img src="@item.Venue.ImageUrl" class="booking-img" />
+                            }
+                        </td>
+
+                        <td>
+                            @item.BookingDate.ToString("dd MMM yyyy")
+                        </td>
+
+                        <td>
+                            @item.Event?.EventName
+                        </td>
+
+                        <td>
+                            @item.Venue?.VenueName
+                        </td>
+
+                        <td class="text-end">
+
+                            <a asp-action="Edit" asp-route-id="@item.BookingId"
+                               class="btn btn-outline-primary btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@item.BookingId"
+                               class="btn btn-outline-danger btn-sm">
+                                Delete
+                            </a>
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+</div>
+
+@section Scripts {
+    <script>
+        let timeout = null;
+
+                       
+            const input = document.getElementById("searchInput");
+
+            if (input) {
+
+                // Restore focus after reload
+                window.onload = function () {
+                    input.focus();
+
+                    const val = input.value;
+                    input.value = "";
+                    input.value = val;
+                };
+
+                input.addEventListener("keyup", function () {
+                    clearTimeout(timeout);
+
+                    timeout = setTimeout(() => {
+                        document.getElementById("searchForm").submit();
+                    }, 500);
+                });
+            }
+    </script>
+
+
+}

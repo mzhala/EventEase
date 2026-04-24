@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EventEase</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+
+        body{
+            background-color:#f5f6f8;
+        }
+
+        .sidebar{
+            width:220px;
+            height:100vh;
+            background:#1f2937;
+            color:white;
+            position:fixed;
+        }
+
+        .sidebar h4{
+            padding:20px;
+            font-weight:600;
+        }
+
+        .sidebar a{
+            display:block;
+            padding:12px 20px;
+            color:#cbd5e1;
+            text-decoration:none;
+        }
+
+        .sidebar a:hover{
+            background:#374151;
+            color:white;
+        }
+
+        .sidebar a.active-link {
+            background: #374151;
+            color: white;
+            font-weight: 600;
+        }
+
+        .content{
+            margin-left:220px;
+            padding:30px;
+        }
+
+        .sidebar-divider {
+            border: none;
+            border-top: 4px solid #374151;
+            margin: 0 20px 10px 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <!-- Logo at bottom -->
+        <div class="text-center mb-3">
+            <img src="~/images/logo.png" alt="Logo" style="max-width:170px;" />
+        </div>
+
+        <hr class="sidebar-divider" />
+
+        <div>
+
+            <a asp-controller="Bookings" asp-action="Index"
+               class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Bookings" ? "active-link" : "")">
+                Bookings
+            </a>
+
+            <a asp-controller="Venues" asp-action="Index"
+               class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Venues" ? "active-link" : "")">
+                Venues
+            </a>
+
+            <a asp-controller="Events" asp-action="Index"
+               class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Events" ? "active-link" : "")">
+                Events
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+
+        <main role="main">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
