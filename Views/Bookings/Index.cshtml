@@ -32,10 +32,11 @@
 
             <thead class="table-light">
                 <tr>
-                    <th></th>
+                    <th>Booking ID</th>
                     <th>Booking Date</th>
                     <th>Event</th>
                     <th>Venue</th>
+                    <th></th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -45,11 +46,9 @@
                 @foreach (var item in Model)
                 {
                     <tr class="align-middle">
+
                         <td>
-                            @if (!string.IsNullOrEmpty(item.Venue?.ImageUrl))
-                            {
-                                <img src="@item.Venue.ImageUrl" class="booking-img" />
-                            }
+                            @item.BookingId
                         </td>
 
                         <td>
@@ -62,6 +61,12 @@
 
                         <td>
                             @item.Venue?.VenueName
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Venue?.ImageUrl))
+                            {
+                                <img src="@item.Venue.ImageUrl" class="booking-img" />
+                            }
                         </td>
 
                         <td class="text-end">

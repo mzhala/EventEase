@@ -20,6 +20,7 @@ namespace EventEase.Controllers
         }
 
         // GET: Bookings
+        // GET: Bookings
         public async Task<IActionResult> Index(string searchString)
         {
             var bookings = _context.Bookings
@@ -30,8 +31,23 @@ namespace EventEase.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 bookings = bookings.Where(b =>
-                    b.Event.EventName.Contains(searchString) ||
-                    b.Venue.VenueName.Contains(searchString));
+
+                    // Booking table
+                    b.BookingId.ToString().Contains(searchString) ||
+                    b.EventId.ToString().Contains(searchString) ||
+                    b.VenueId.ToString().Contains(searchString) ||
+                    b.BookingDate.ToString().Contains(searchString) ||
+
+                    // Event table
+                    (b.Event != null && (
+                        b.Event.EventName.Contains(searchString)
+                    )) ||
+
+                    // Venue table
+                    (b.Venue != null && (
+                        b.Venue.VenueName.Contains(searchString)
+                    ))
+                );
             }
 
             return View(await bookings.ToListAsync());

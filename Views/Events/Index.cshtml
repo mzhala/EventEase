@@ -28,6 +28,7 @@
 
             <thead class="table-light">
                 <tr>
+                    <th>Event ID</th>
                     <th>Event Name</th>
                     <th>Description</th>
                     <th class="text-end">Actions</th>
@@ -39,6 +40,10 @@
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <td class="fw-semibold">
+                            @item.EventId
+                        </td>
+
                         <td class="fw-semibold">
                             @item.EventName
                         </td>

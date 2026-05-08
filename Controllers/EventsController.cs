@@ -26,8 +26,12 @@ namespace EventEase.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 events = events.Where(e =>
-                    e.EventName.Contains(searchString) ||
-                    e.Description.Contains(searchString));
+
+                    // Event table columns
+                    e.EventId.ToString().Contains(searchString) ||
+                    (e.EventName != null && e.EventName.Contains(searchString)) ||
+                    (e.Description != null && e.Description.Contains(searchString))
+                );
             }
 
             return View(await events.ToListAsync());

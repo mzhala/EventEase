@@ -30,8 +30,14 @@ namespace EventEase.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 venues = venues.Where(v =>
-                    v.VenueName.Contains(searchString) ||
-                    v.Location.Contains(searchString));
+
+                    // Venue table columns
+                    v.VenueId.ToString().Contains(searchString) ||
+                    (v.VenueName != null && v.VenueName.Contains(searchString)) ||
+                    (v.Location != null && v.Location.Contains(searchString)) ||
+                    v.Capacity.ToString().Contains(searchString) ||
+                    (v.ImageUrl != null && v.ImageUrl.Contains(searchString))
+                );
             }
 
             return View(await venues.ToListAsync());
